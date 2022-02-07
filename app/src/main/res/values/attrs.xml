@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="LoadingIndicatorButton">
+        <attr name="android:background" format="color"/>
+        <attr name="inProgressIndicatorColor" format="color" />
+        <attr name="failureIndicatorColor" format="color" />
+        <attr name="finishIndicatorColor" format="color" />
+
+        <attr name="android:onClick" format="reference" />
+
+        <attr name="updateProgress" format="float" />
+        <attr name="updateStatus" format="integer" />
+
+        <attr name="showCircularIndicator" format="boolean" />
+        <attr name="circularIndicatorColor" format="color" />
+
+        <attr name="android:textAlignment" format="integer" />
+        <attr name="android:text" format="string"/>
+        <attr name="android:textSize" format="float" />
+        <attr name="textAllCaps" format="boolean" />
+        <attr name="android:textColor" format="integer" />
+        <attr name="android:textStyle">
+                <flag name="normal" value="0" />
+                <flag name="bold" value="1" />
+                <flag name="italic" value="2" />
+        </attr>
+    </declare-styleable>
+</resources>

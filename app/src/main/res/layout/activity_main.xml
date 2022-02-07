@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <variable
+            name="viewModel"
+            type="com.example.customviewsudacityproject.viewModels.MainActivityViewModel" />
+
+    </data>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".MainActivity">
+
+        <com.google.android.material.appbar.AppBarLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:theme="@style/AppTheme.AppBarOverlay">
+
+            <androidx.appcompat.widget.Toolbar
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                android:id="@+id/toolbar"
+                android:background="@color/colorPrimary"
+                app:popupTheme="@style/AppTheme.PopupOverlay" />
+
+        </com.google.android.material.appbar.AppBarLayout>
+
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:layout_width="match_parent"
+            android:layout_height="220dp"
+            android:background="@color/colorPrimaryDark"
+            android:layout_marginTop="?attr/actionBarSize"
+            android:orientation="horizontal">
+            <androidx.appcompat.widget.AppCompatImageView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:srcCompat="@drawable/ic_baseline_cloud_download_24"
+                android:id="@+id/download_image"/>
+        </androidx.appcompat.widget.LinearLayoutCompat>
+
+        <include layout="@layout/content_main"
+            android:layout_marginTop="280dp"
+            android:layout_height="280dp"
+            android:id="@+id/content_main"
+            android:layout_width="match_parent" />
+
+
+        <com.example.customviewsudacityproject.customViews.LoadingIndicatorButton
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginStart="28dp"
+            android:layout_marginTop="580dp"
+            android:layout_marginEnd="28dp"
+            android:textColor="@color/white"
+            android:layout_marginBottom="28dp"
+            android:textAlignment="center"
+            android:id="@+id/download_btn"
+            app:inProgressIndicatorColor="@color/colorPrimaryDark"
+            app:showCircularIndicator="true"
+            app:circularIndicatorColor="@color/colorAccent"
+            android:text="@string/button_name"
+            android:textSize="16sp"
+            android:background="@color/teal_200" />
+
+
+<!--        <androidx.appcompat.widget.AppCompatButton-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:background="@color/colorPrimary"-->
+<!--            android:text="@string/button_name"-->
+<!--            android:textColor="@android:color/white"-->
+<!--            android:textStyle="bold"-->
+<!--            android:layout_marginTop="580dp"-->
+<!--            android:layout_marginStart="28dp"-->
+<!--            android:layout_marginEnd="28dp"-->
+<!--            android:id="@+id/download_btn"/>-->
+
+
+
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+    </ScrollView>
+</layout>
