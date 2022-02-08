@@ -70,21 +70,6 @@
             android:textSize="16sp"
             android:background="@color/teal_200" />
 
-
-<!--        <androidx.appcompat.widget.AppCompatButton-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:background="@color/colorPrimary"-->
-<!--            android:text="@string/button_name"-->
-<!--            android:textColor="@android:color/white"-->
-<!--            android:textStyle="bold"-->
-<!--            android:layout_marginTop="580dp"-->
-<!--            android:layout_marginStart="28dp"-->
-<!--            android:layout_marginEnd="28dp"-->
-<!--            android:id="@+id/download_btn"/>-->
-
-
-
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
     </ScrollView>
 </layout>
