@@ -45,7 +45,7 @@ class LoadingIndicatorButton @JvmOverloads constructor(
     var WIDGET_TEXT_COLOR = 0
     var WIDGET_TEXT_STYLE = 0
 
-    private var ANIMATED_WIDGET_WIDTH: Int = 0
+    private var ANIMATED_WIDGET_WIDTH: Float = 0.0f
     private var ANIMATED_CIRCLE_ANGLE: Float = 0.0f
 
         //Circular Indicator Attributes
@@ -53,6 +53,7 @@ class LoadingIndicatorButton @JvmOverloads constructor(
     var CIRCULAR_INDICATOR_COLOR = 0
 
     private lateinit var buttonBGAnimator: ValueAnimator
+    private lateinit var buttonCircleAnimator: ValueAnimator
 
    internal var loadStatus: LoadingButtonUtils by Delegates.observable(LoadingButtonUtils.ON_CLICK_DOWNLOAD){
             initialValue,oldValue,newValue ->
@@ -66,16 +67,20 @@ class LoadingIndicatorButton @JvmOverloads constructor(
             LoadingButtonUtils.DOWNLOAD_FINISHED ->{
                 WIDGET_TEXT = context.getString(R.string.button_download_finished)
                 LoadingButtonUtils.ON_CLICK_DOWNLOAD
+                buttonBGAnimator.cancel()
+                buttonCircleAnimator.cancel()
                 invalidate()
             }
             LoadingButtonUtils.DOWNLOAD_ERROR -> {
                 WIDGET_TEXT = context.getString(R.string.button_download_error)
                 LoadingButtonUtils.ON_CLICK_DOWNLOAD
+                buttonBGAnimator.cancel()
+                buttonCircleAnimator.cancel()
                 invalidate()
             }
             LoadingButtonUtils.ON_CLICK_DOWNLOAD ->{
                 WIDGET_ON_CLICK = false
-                ANIMATED_WIDGET_WIDTH = 0
+                ANIMATED_WIDGET_WIDTH = 0f
                 ANIMATED_CIRCLE_ANGLE = 0f
                 WIDGET_TEXT = context.getString(R.string.button_name)
             }
@@ -111,15 +116,35 @@ class LoadingIndicatorButton @JvmOverloads constructor(
     }
 
     override fun performClick(): Boolean {
+        super.performClick()
         loadStatus = LoadingButtonUtils.DOWNLOAD_IN_PROGRESS
-        buttonBGAnimator = ValueAnimator.ofInt(0,WIDGET_WIDTH).apply {
+        buttonBGAnimator = ValueAnimator.ofFloat(0.0f,WIDGET_WIDTH.toFloat()).apply {
             duration = 2000
             repeatCount = ValueAnimator.INFINITE
             repeatMode = ValueAnimator.RESTART
             interpolator = LinearInterpolator()
+            addUpdateListener {
+                ANIMATED_WIDGET_WIDTH = it.animatedValue as Float
+                invalidate()
+            }
         }
-        invalidate()
-        return super.performClick()
+        buttonBGAnimator.start()
+
+        if (SHOW_CIRCULAR_PROGRESS_INDICATOR){
+            buttonCircleAnimator = ValueAnimator.ofFloat(0f,360f).apply {
+                duration = 2000
+                repeatCount = ValueAnimator.INFINITE
+                repeatMode = ValueAnimator.RESTART
+                interpolator = LinearInterpolator()
+                addUpdateListener {
+                    ANIMATED_CIRCLE_ANGLE = it.animatedValue as Float
+                    invalidate()
+                }
+            }
+            buttonCircleAnimator.start()
+        }
+
+        return true
     }
 
     override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
@@ -155,22 +180,15 @@ class LoadingIndicatorButton @JvmOverloads constructor(
                 drawTextOnButton(canvas,WIDGET_TEXT)
             }
             LoadingButtonUtils.DOWNLOAD_IN_PROGRESS -> {
-//                if(ANIMATED_WIDGET_WIDTH < WIDGET_WIDTH) ANIMATED_WIDGET_WIDTH +=5 else ANIMATED_WIDGET_WIDTH = 1
-                buttonBGAnimator.addUpdateListener {
-                    ANIMATED_WIDGET_WIDTH = it.animatedValue as Int
-                    clipAndDrawAnimButtonDimensions(canvas)
-                    drawTextOnButton(canvas,WIDGET_TEXT)
-                    invalidate()
-                }
-                buttonBGAnimator.start()
-//                clipAndDrawAnimButtonDimensions(canvas)
-//                drawTextOnButton(canvas,WIDGET_TEXT)
+                clipAndDrawAnimButtonDimensions(canvas)
+                drawTextOnButton(canvas, WIDGET_TEXT)
 
-//                if (SHOW_CIRCULAR_PROGRESS_INDICATOR) {
-//                    showLoadingCircle(canvas)
-//                }
-//                invalidate()
+                if (SHOW_CIRCULAR_PROGRESS_INDICATOR){
+                    showLoadingCircle(canvas)
+                }
+
             }
+
             LoadingButtonUtils.DOWNLOAD_ERROR -> {
                 clipAndDrawButtonDimensions(canvas)
                 drawTextOnButton(canvas,WIDGET_TEXT)
@@ -212,7 +230,7 @@ class LoadingIndicatorButton @JvmOverloads constructor(
     private fun showLoadingCircle(canvas: Canvas?) {
         paint.color = CIRCULAR_INDICATOR_COLOR
 
-        if(ANIMATED_CIRCLE_ANGLE < 360f) ANIMATED_CIRCLE_ANGLE += 2 else ANIMATED_CIRCLE_ANGLE = 2f
+//        if(ANIMATED_CIRCLE_ANGLE < 360f) ANIMATED_CIRCLE_ANGLE += 2 else ANIMATED_CIRCLE_ANGLE = 2f
 
         canvas?.drawArc(
             WIDGET_WIDTH/1.3f,
