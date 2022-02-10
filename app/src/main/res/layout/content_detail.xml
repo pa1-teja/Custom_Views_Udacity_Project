@@ -12,7 +12,7 @@
         android:layout_height="match_parent"
         tools:context=".DetailActivity"
         android:id="@+id/root_layout"
-        android:layout_margin="12dp"
+        android:layout_margin="24dp"
         app:layoutDescription="@xml/activity_detail_scene">
 
                 <androidx.appcompat.widget.AppCompatTextView

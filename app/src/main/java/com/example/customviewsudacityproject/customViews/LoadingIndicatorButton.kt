@@ -52,6 +52,7 @@ class LoadingIndicatorButton @JvmOverloads constructor(
     var SHOW_CIRCULAR_PROGRESS_INDICATOR = false
     var CIRCULAR_INDICATOR_COLOR = 0
 
+    private lateinit var buttonBGAnimator: ValueAnimator
 
    internal var loadStatus: LoadingButtonUtils by Delegates.observable(LoadingButtonUtils.ON_CLICK_DOWNLOAD){
             initialValue,oldValue,newValue ->
@@ -111,6 +112,12 @@ class LoadingIndicatorButton @JvmOverloads constructor(
 
     override fun performClick(): Boolean {
         loadStatus = LoadingButtonUtils.DOWNLOAD_IN_PROGRESS
+        buttonBGAnimator = ValueAnimator.ofInt(0,WIDGET_WIDTH).apply {
+            duration = 2000
+            repeatCount = ValueAnimator.INFINITE
+            repeatMode = ValueAnimator.RESTART
+            interpolator = LinearInterpolator()
+        }
         invalidate()
         return super.performClick()
     }
@@ -148,14 +155,21 @@ class LoadingIndicatorButton @JvmOverloads constructor(
                 drawTextOnButton(canvas,WIDGET_TEXT)
             }
             LoadingButtonUtils.DOWNLOAD_IN_PROGRESS -> {
-                if(ANIMATED_WIDGET_WIDTH < WIDGET_WIDTH) ANIMATED_WIDGET_WIDTH +=5 else ANIMATED_WIDGET_WIDTH = 1
-                clipAndDrawAnimButtonDimensions(canvas)
-                drawTextOnButton(canvas,WIDGET_TEXT)
-
-                if (SHOW_CIRCULAR_PROGRESS_INDICATOR) {
-                    showLoadingCircle(canvas)
+//                if(ANIMATED_WIDGET_WIDTH < WIDGET_WIDTH) ANIMATED_WIDGET_WIDTH +=5 else ANIMATED_WIDGET_WIDTH = 1
+                buttonBGAnimator.addUpdateListener {
+                    ANIMATED_WIDGET_WIDTH = it.animatedValue as Int
+                    clipAndDrawAnimButtonDimensions(canvas)
+                    drawTextOnButton(canvas,WIDGET_TEXT)
+                    invalidate()
                 }
-                invalidate()
+                buttonBGAnimator.start()
+//                clipAndDrawAnimButtonDimensions(canvas)
+//                drawTextOnButton(canvas,WIDGET_TEXT)
+
+//                if (SHOW_CIRCULAR_PROGRESS_INDICATOR) {
+//                    showLoadingCircle(canvas)
+//                }
+//                invalidate()
             }
             LoadingButtonUtils.DOWNLOAD_ERROR -> {
                 clipAndDrawButtonDimensions(canvas)

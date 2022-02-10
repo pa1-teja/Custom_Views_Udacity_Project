@@ -117,6 +117,7 @@
             android:alpha="1.0"
             android:background="@color/colorAccent"
             android:layout_margin="24dp"
+            android:layout_marginBottom="24dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent" />
